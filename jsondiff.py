@@ -107,7 +107,10 @@ class _compare_info(object):
                         op_first.path == op_second.path and \
                         type(op_first) == _op_remove and \
                         type(op_second) == _op_add:
-                    yield _op_replace(op_second.path, op_second.key, op_second.value).get()
+                    info = _compare_info()
+                    _compare_values(op_second.path, op_second.key, info, op_first.value, op_second.value)
+                    for i in info.execute():
+                        yield i
                     curr = curr[1][1]
                     continue
             yield curr[2].get()
