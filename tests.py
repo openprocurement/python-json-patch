@@ -317,6 +317,25 @@ class MakePatchTestCase(unittest.TestCase):
         res = jsonpatch.apply_patch(src, patch)
         self.assertEqual(res, dst)
 
+    def test_should_add_instead_of_move_add2(self):
+        src = [2, 4, 5]
+        dst = [1, 2, 3, 4, 5]
+        patch = list(jsonpatch.make_patch(src, dst))
+        self.assertEqual(len(patch), 2)
+        self.assertEqual(patch[0]['op'], 'add')
+        res = jsonpatch.apply_patch(src, patch)
+        self.assertEqual(res, dst)
+
+    def test_should_remove_instead_of_remove_move(self):
+        src = [1, 2, 3, 4, 5]
+        dst = [2, 4, 5]
+        patch = list(jsonpatch.make_patch(src, dst))
+        self.assertEqual(len(patch), 2)
+        self.assertEqual(patch[0]['op'], 'remove')
+        self.assertEqual(patch[1]['op'], 'remove')
+        res = jsonpatch.apply_patch(src, patch)
+        self.assertEqual(res, dst)
+
     def test_use_replace_instead_of_remove_add(self):
         src = {'foo': [1, 2, 3]}
         dst = {'foo': [3, 2, 3]}

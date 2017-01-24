@@ -113,7 +113,8 @@ class _compare_info(object):
                         yield i
                     curr = curr[1][1]
                     continue
-            yield curr[2].get()
+            if type(curr[2]) != _op_move or curr[2].oldpath != curr[2].path or curr[2].oldkey != curr[2].key:
+                yield curr[2].get()
             curr = curr[1]
 
 class _op_base(object):
